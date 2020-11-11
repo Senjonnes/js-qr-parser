@@ -2,28 +2,34 @@ let x = "0002010102121531**999166**999166****M000000000126720019NG.COM.NIBSS-PLC
 
 // let x = "000201010212021341318320274435204729953035665802NG5919Nez Stores and more6012LAGOS ISLAND63045D48";
 
-let ln = 2;
-let obj = {};
-let valueLength = 0;
-let startIndex = 0;
-let endIndex = 0;
-let keyStartIndex = 0;
-let keyEndIndex = 0;
-let stepper = ln;
-let singleIndex = 1;
+// let x = "00020102124037531553535204599953035665802NG5917Taos Beauty Brand6005Lekki6304FB30"
+
+// let x = "000201021040375331165204563153035665802NG5924Ebanking Welfare Account6005Lagos6304B927"
+
+
+
+let ln = 2, obj = {}, valueLength = 0, startIndex = 0, endIndex = 0, keyStartIndex = 0, keyEndIndex = 0, stepper = ln, singleIndex = 1;
 const parser = (x) => {
   for(let i = 0; i < x.length; i++) {
     if(i + singleIndex === ln) {
       keyStartIndex = i - singleIndex;
       keyEndIndex = i + singleIndex;
-      valueLength = i > singleIndex ? parseInt(x.slice(ln, ln + stepper)) : parseInt(x.slice(ln, [i + ln + singleIndex]));
-      startIndex = i > singleIndex ? (i + singleIndex) + stepper : (i + singleIndex) + ln;
+      valueLength = setValueLength(i, singleIndex, x, ln, stepper);
+      startIndex = setStartIndex(i, singleIndex, stepper, ln);
       endIndex = startIndex + valueLength
       obj[x.slice(keyStartIndex, keyEndIndex)] = x.slice(startIndex, endIndex);
       ln = endIndex + stepper;
     }
   }
   return obj;
+}
+
+const setValueLength = (i, singleIndex, x, ln, stepper) => {
+  return i > singleIndex ? parseInt(x.slice(ln, ln + stepper)) : parseInt(x.slice(ln, [i + ln + singleIndex]));
+}
+
+const setStartIndex = (i, singleIndex, stepper, ln) => {
+  return i > singleIndex ? (i + singleIndex) + stepper : (i + singleIndex) + ln;
 }
 
 console.log(parser(x))
