@@ -8,17 +8,17 @@ let x = "0002010102121531**999166**999166****M000000000126720019NG.COM.NIBSS-PLC
 
 
 
-let ln = 2, obj = {}, valueLength = 0, startIndex = 0, endIndex = 0, keyStartIndex = 0, keyEndIndex = 0, stepper = ln, singleIndex = 1;
+let ln = 2, obj = {}, valueLength = 0, valueStartIndex = 0, valueEndIndex = 0, keyStartIndex = 0, keyEndIndex = 0, stepper = ln, singleIndex = 1;
 const parser = (x) => {
   for(let i = 0; i < x.length; i++) {
     if(i + singleIndex === ln) {
       keyStartIndex = i - singleIndex;
       keyEndIndex = i + singleIndex;
       valueLength = setValueLength(i, singleIndex, x, ln, stepper);
-      startIndex = setStartIndex(i, singleIndex, stepper, ln);
-      endIndex = startIndex + valueLength
-      obj[x.slice(keyStartIndex, keyEndIndex)] = x.slice(startIndex, endIndex);
-      ln = endIndex + stepper;
+      valueStartIndex = setStartIndex(i, singleIndex, stepper, ln);
+      valueEndIndex = valueStartIndex + valueLength
+      obj[x.slice(keyStartIndex, keyEndIndex)] = x.slice(valueStartIndex, valueEndIndex);
+      ln = valueEndIndex + stepper;
     }
   }
   return obj;
